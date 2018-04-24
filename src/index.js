@@ -32,6 +32,7 @@ function start() {
         }
     });
 }
+start();
 process.on('SIGINT', function () {
     console.log("\nending!");
     button.closeButton();
