@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/castlechef/home-info#readme",
   "dependencies": {
+    "lcd": "^2.0.3",
     "onoff": "^3.0.2"
   }
 }
