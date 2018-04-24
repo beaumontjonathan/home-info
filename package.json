@@ -18,6 +18,8 @@
   "homepage": "https://github.com/castlechef/home-info#readme",
   "dependencies": {
     "lcd": "^2.0.3",
-    "onoff": "^3.0.2"
+    "onoff": "^3.0.2",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2"
   }
 }

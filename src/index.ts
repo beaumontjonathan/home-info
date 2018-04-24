@@ -1,5 +1,6 @@
 import { Button } from "./models/Button";
 import { Display } from "./models/Display";
+import { Weather } from "./models/Weather";
 
 const button: Button = new Button(26);
 button.waitForPress().then(() => {
@@ -14,9 +15,15 @@ const display: Display = new Display({
     rows: 2
 });
 
-display.writeMessage(0, Display.ROW.TOP, 'hello world').then(() => {
-    display.writeMessage(0, Display.ROW.BOTTOM, new Date().toISOString().substring(11, 19))
-});
+const weather: Weather = new Weather();
+
+async function start() {
+    await display.writeMessage(0, Display.ROW.TOP, 'Temperature:');
+    while (true) {
+        await weather.waitForWeatherUpdate();
+        await display.writeMessage(0, Display.ROW.BOTTOM, `${weather.temperature}°`);
+    }
+}
 
 process.on('SIGINT', function() {
     console.log("\nending!");
