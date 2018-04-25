@@ -31,6 +31,8 @@ class BusStop {
         });
     }
     processBusStopResponse(data) {
+        if (!data)
+            return;
         const dataU2 = data.departures['U2'] || [];
         const data1 = data.departures['1'] || [];
         const allData = dataU2.concat(data1);

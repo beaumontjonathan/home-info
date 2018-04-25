@@ -29,6 +29,7 @@ export class BusStop {
     }
 
     private processBusStopResponse(data: BusStopResponse): void {
+        if (!data) return;
         const dataU2: BusStopDepartureResponse = data.departures['U2'] || [];
         const data1: BusStopDepartureResponse = data.departures['1'] || [];
         const allData: BusStopDepartureResponse = dataU2.concat(data1);
