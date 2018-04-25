@@ -18,7 +18,7 @@ class BusStop {
     }
     startUpdateInterval() {
         this.updateArrivalData();
-        this.updateInterval = setInterval(this.updateArrivalData.bind(this), 5000);
+        this.updateInterval = setInterval(this.updateArrivalData.bind(this), 90000);
     }
     updateArrivalData() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -60,5 +60,5 @@ class BusStop {
 }
 BusStop.UPDATE_INTERVAL_SECONDS = 10;
 exports.BusStop = BusStop;
-const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=f366ed6e&app_key=8a53da7e0c5fee4164410f3aede9439e';
+const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92';
 //# sourceMappingURL=BusStop.js.map

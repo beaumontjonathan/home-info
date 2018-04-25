@@ -16,7 +16,7 @@ export class BusStop {
 
     private startUpdateInterval() {
         this.updateArrivalData();
-        this.updateInterval = setInterval(this.updateArrivalData.bind(this), 5000);
+        this.updateInterval = setInterval(this.updateArrivalData.bind(this), 90000);
     }
 
     private async updateArrivalData() {
@@ -102,4 +102,4 @@ export type BusDeparture = {
     estimatedDepartureTime: string
 }
 
-const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=f366ed6e&app_key=8a53da7e0c5fee4164410f3aede9439e';
+const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92';
