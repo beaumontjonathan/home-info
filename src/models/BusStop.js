@@ -42,6 +42,7 @@ class BusStop {
                 estimatedDepartureTime: dep.Due
             };
         });
+        console.log('there are ' + departures.length + ' departures');
         this.busDepartures = departures;
         this.events.emit('updated-departures');
     }
@@ -56,11 +57,5 @@ class BusStop {
 BusStop.UPDATE_INTERVAL_SECONDS = 10;
 exports.BusStop = BusStop;
 const url = 'https://www.firstgroup.com/getNextBus?stop=0180BAC30294';
-rp({
-    uri: url,
-    method: 'POST',
-    body: 'stop=0180BAC30294',
-    json: true
-}).then(d => console.log('data!', d)).catch(e => console.log('error :(', e.message));
 //const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92'; 
 //# sourceMappingURL=BusStop.js.map
