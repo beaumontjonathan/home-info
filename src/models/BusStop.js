@@ -31,21 +31,16 @@ class BusStop {
         });
     }
     processBusStopResponse(data) {
-        if (!data)
+        if (!data || !data.times)
             return;
-        const dataU2 = data.departures['U2'] || [];
-        const data1 = data.departures['1'] || [];
-        const allData = dataU2.concat(data1);
-        const departures = allData
+        const times = data.times;
+        const departures = times
+            .filter(dep => dep.IsLive = 'Y')
             .map(dep => {
             return {
-                routeName: dep.line_name,
-                date: dep.date,
-                estimatedDepartureTime: dep.best_departure_estimate
+                routeName: dep.ServiceNumber,
+                estimatedDepartureTime: dep.Due
             };
-        })
-            .sort(({ date: d1, estimatedDepartureTime: t1 }, { date: d2, estimatedDepartureTime: t2 }) => {
-            return +new Date(`${d1} ${t1}`) - +new Date(`${d2} ${t2}`);
         });
         this.busDepartures = departures;
         this.events.emit('updated-departures');
@@ -60,5 +55,12 @@ class BusStop {
 }
 BusStop.UPDATE_INTERVAL_SECONDS = 10;
 exports.BusStop = BusStop;
-const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92';
+const url = 'https://www.firstgroup.com/getNextBus?stop=0180BAC30294';
+rp({
+    uri: url,
+    method: 'POST',
+    body: 'stop=0180BAC30294',
+    json: true
+}).then(d => console.log('data!', d)).catch(e => console.log('error :(', e.message));
+//const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92'; 
 //# sourceMappingURL=BusStop.js.map

@@ -6,7 +6,7 @@ export class BusStop {
 
     private updateInterval: number;
     private events: EventEmitter;
-    public busDepartures: BusDeparture[];
+    public busDepartures: any[];
 
     constructor() {
         this.events = new EventEmitter();
@@ -29,21 +29,18 @@ export class BusStop {
     }
 
     private processBusStopResponse(data: BusStopResponse): void {
-        if (!data) return;
-        const dataU2: BusStopDepartureResponse = data.departures['U2'] || [];
-        const data1: BusStopDepartureResponse = data.departures['1'] || [];
-        const allData: BusStopDepartureResponse = dataU2.concat(data1);
-        const departures: BusDeparture[] = allData
+        if (!data || !data.times) return;
+
+        const times = data.times;
+        const departures = times
+            .filter(dep => dep.IsLive = 'Y')
             .map(dep => {
                 return {
-                    routeName: dep.line_name,
-                    date: dep.date,
-                    estimatedDepartureTime: dep.best_departure_estimate
+                    routeName: dep.ServiceNumber,
+                    estimatedDepartureTime: dep.Due
                 };
-            })
-            .sort(({date: d1, estimatedDepartureTime: t1}, {date: d2, estimatedDepartureTime: t2}) => {
-                return +new Date(`${d1} ${t1}`) - +new Date(`${d2} ${t2}`);
             });
+
         this.busDepartures = departures;
         this.events.emit('updated-departures');
     }
@@ -62,7 +59,6 @@ export type BusStopResponse = {
     smscode: string
     request_time: string
     name: string
-    stop_name: string
     bearing: string
     indicator: string
     locality: string
@@ -70,36 +66,35 @@ export type BusStopResponse = {
         type: string
         coordinates: [number, number]
     }
-    departures: BusStopDeparturesResponse
+    departures: object
     source: string
+    times: {
+        ServiceRef: string
+        ServiceNumber: string // U2 / 1
+        Destination: string
+        Due: string // Due now / 10 mins
+        IsFG: string // Y/N
+        IsLive: string //Y/N
+    }[]
+    stop: {
+        code: string
+        mark: string
+        direction: string
+        latitude: string
+        longitude: string
+        indicator: string
+        name: string
+        locality: string
+        qualifier: string
+    }
+    fromTraveline: string // DD/MM/YYYY hh:mm
 }
 
-export type BusStopDeparturesResponse = {
-    U2: BusStopDepartureResponse
-    1: BusStopDepartureResponse
-}
-
-export type BusStopDepartureResponse = {
-    mode: string
-    line: string
-    line_name: string
-    direction: string
-    operator: string
-    date: string
-    expected_departure_date: null
-    aimed_departure_time: string
-    expected_departure_time: null
-    best_departure_estimate: string
-    source: string
-    dir: string
-    id: string
-    operator_name: null
-}[]
-
-export type BusDeparture = {
-    routeName: string
-    date: string
-    estimatedDepartureTime: string
-}
-
-const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92';
+const url = 'https://www.firstgroup.com/getNextBus?stop=0180BAC30294';
+rp({
+    uri: url,
+    method: 'POST',
+    body: 'stop=0180BAC30294',
+    json: true
+}).then(d => console.log('data!', d)).catch(e => console.log('error :(', e.message));
+//const url = 'http://transportapi.com/v3/uk/bus/stop/0180BAC30294/live.json?app_id=a48c7d2d&app_key=16afbe976ee991141e25c97aba419c92';
