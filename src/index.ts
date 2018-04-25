@@ -48,10 +48,10 @@ async function start2() {
             await display2.writeMessage(0, Display.ROW.BOTTOM, message);
         } else {
             depIndex = deps.length < 5 ? deps.length - 1 : depIndex;
-            const m1 = `${depIndex + 1}  ${deps[depIndex].routeName} - ${deps[depIndex].estimatedDepartureTime}`.substr(0, 16);
+            const m1 = `${depIndex + 1}  ${padToLength(deps[depIndex].routeName, 3)} - ${deps[depIndex].estimatedDepartureTime}`.substr(0, 16);
             await display2.writeMessage(0, Display.ROW.TOP, m1);
             if (deps[depIndex + 1]) {
-                const m2 = `${depIndex + 2}  ${deps[depIndex + 1].routeName} - ${deps[depIndex + 1].estimatedDepartureTime}`.substr(0, 16);
+                const m2 = `${depIndex + 2}  ${padToLength(deps[depIndex + 1].routeName, 3)} - ${deps[depIndex + 1].estimatedDepartureTime}`.substr(0, 16);
                 await display2.writeMessage(0, Display.ROW.BOTTOM, m2);
             }
             /*if (deps.length === 1) {
@@ -75,11 +75,19 @@ async function start2() {
             deps = busStop.busDepartures;
             await displayStuff();
         } else {
+            let m = 'Updating depIndex. Was ' + depIndex;
             const max = deps.length < 5 ? deps.length - 1 : 5;
             depIndex = (depIndex + 1) % max;
+            m += ', now is ' + depIndex;
+            console.log(depIndex);
             await displayStuff();
         }
     }
+}
+
+function padToLength(str: string, length: number) {
+    if (str.length > length) return str.substr(0, length);
+    return str += ' '.repeat(length - str.length);
 }
 
 function waitForFirst(ps: Promise<any>[]): Promise<number> {
