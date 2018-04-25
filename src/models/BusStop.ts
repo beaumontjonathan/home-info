@@ -16,7 +16,7 @@ export class BusStop {
 
     private startUpdateInterval() {
         this.updateArrivalData();
-        this.updateInterval = setInterval(this.updateArrivalData.bind(this), 90000);
+        this.updateInterval = setInterval(this.updateArrivalData.bind(this), BusStop.UPDATE_INTERVAL_SECONDS * 1000);
     }
 
     private async updateArrivalData() {

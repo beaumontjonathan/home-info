@@ -18,7 +18,7 @@ class BusStop {
     }
     startUpdateInterval() {
         this.updateArrivalData();
-        this.updateInterval = setInterval(this.updateArrivalData.bind(this), 90000);
+        this.updateInterval = setInterval(this.updateArrivalData.bind(this), BusStop.UPDATE_INTERVAL_SECONDS * 1000);
     }
     updateArrivalData() {
         return __awaiter(this, void 0, void 0, function* () {
