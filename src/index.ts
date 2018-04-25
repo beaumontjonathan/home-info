@@ -71,6 +71,7 @@ async function start2() {
         const buttonPromise: Promise<any> = button.waitForPress();
         const i = await waitForFirst([busStopPromise, buttonPromise]);
         depIndex = 0;
+        console.log('the value of i is ' + i);
         if (i === 0) {
             deps = busStop.busDepartures;
             await displayStuff();

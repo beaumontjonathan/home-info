@@ -78,6 +78,7 @@ function start2() {
             const buttonPromise = button.waitForPress();
             const i = yield waitForFirst([busStopPromise, buttonPromise]);
             depIndex = 0;
+            console.log('the value of i is ' + i);
             if (i === 0) {
                 deps = busStop.busDepartures;
                 yield displayStuff();
