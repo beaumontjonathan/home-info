@@ -49,9 +49,9 @@ async function start2() {
             message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
             await display2.writeMessage(0, Display.ROW.BOTTOM, message);
         } else {
-            message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
+            message = `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
             await display2.writeMessage(0, Display.ROW.TOP, message);
-            message += `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`
+            message = `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`
             await display2.writeMessage(0, Display.ROW.BOTTOM, message);
         }
     }

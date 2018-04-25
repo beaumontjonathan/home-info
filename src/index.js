@@ -57,9 +57,9 @@ function start2() {
                 yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, message);
             }
             else {
-                message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`;
+                message = `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`;
                 yield display2.writeMessage(0, Display_1.Display.ROW.TOP, message);
-                message += `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`;
+                message = `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`;
                 yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, message);
             }
         }
