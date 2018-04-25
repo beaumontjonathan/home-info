@@ -44,7 +44,8 @@ async function start2() {
     async function displayStuff() {
         if (deps.length === 0) {
             let message = 'No bus data :(';
-            await display2.writeMessage(0, Display.ROW.BOTTOM, message);
+            await display2.writeMessage(0, Display.ROW.TOP, message);
+            await display.writeMessage(0, Display.ROW.BOTTOM, ' '.repeat(16));
         } else {
             depIndex = deps.length < 5 ? deps.length - 1 : depIndex;
             const m1 = `${depIndex + 1}  ${padToLength(deps[depIndex].routeName, 3)} - ${deps[depIndex].estimatedDepartureTime}`.substr(0, 16);
