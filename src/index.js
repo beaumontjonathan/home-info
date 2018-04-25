@@ -48,7 +48,6 @@ function start2() {
         let depIndex = 0;
         function displayStuff() {
             return __awaiter(this, void 0, void 0, function* () {
-                console.log(deps);
                 if (deps.length === 0) {
                     let message = 'No bus data :(';
                     yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, message);
@@ -60,6 +59,9 @@ function start2() {
                     if (deps[depIndex + 1]) {
                         const m2 = `${depIndex + 2}  ${padToLength(deps[depIndex + 1].routeName, 3)} - ${deps[depIndex + 1].estimatedDepartureTime}`.substr(0, 16);
                         yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, m2);
+                    }
+                    else {
+                        yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
                     }
                     /*if (deps.length === 1) {
                         message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
@@ -77,18 +79,13 @@ function start2() {
             const busStopPromise = busStop.waitForNewDepartures();
             const buttonPromise = button.waitForPress();
             const i = yield waitForFirst([busStopPromise, buttonPromise]);
-            depIndex = 0;
-            console.log('the value of i is ' + i);
             if (i === 0) {
                 deps = busStop.busDepartures;
                 yield displayStuff();
             }
             else {
-                let m = 'Updating depIndex. Was ' + depIndex;
                 const max = deps.length < 5 ? deps.length - 1 : 5;
                 depIndex = (depIndex + 1) % max;
-                m += ', now is ' + depIndex;
-                console.log(depIndex);
                 yield displayStuff();
             }
         }

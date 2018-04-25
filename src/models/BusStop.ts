@@ -40,7 +40,6 @@ export class BusStop {
                     estimatedDepartureTime: dep.Due
                 };
             });
-        console.log('there are ' + departures.length + ' departures');
         this.busDepartures = departures;
         this.events.emit('updated-departures');
     }
