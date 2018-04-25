@@ -66,7 +66,7 @@ function start2() {
     });
 }
 start();
-start2();
+start2().catch(e => console.log('fuck', e.message));
 process.on('SIGINT', function () {
     console.log("\nending!");
     button.closeButton();
