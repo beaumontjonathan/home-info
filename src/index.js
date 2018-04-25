@@ -48,6 +48,7 @@ function start2() {
         let depIndex = 0;
         function displayStuff() {
             return __awaiter(this, void 0, void 0, function* () {
+                console.log(deps);
                 if (deps.length === 0) {
                     let message = 'No bus data :(';
                     yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, message);

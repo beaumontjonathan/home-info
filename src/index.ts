@@ -42,6 +42,7 @@ async function start2() {
     let depIndex: number = 0;
 
     async function displayStuff() {
+        console.log(deps);
         if (deps.length === 0) {
             let message = 'No bus data :(';
             await display2.writeMessage(0, Display.ROW.BOTTOM, message);
