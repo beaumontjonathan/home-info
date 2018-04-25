@@ -38,23 +38,61 @@ async function start() {
 
 async function start2() {
     await display2.writeMessage(0, Display.ROW.TOP, 'Buses:');
-    while (true) {
-        await busStop.waitForNewDepartures();
-        let deps = busStop.busDepartures;
-        let message = '';
+    let deps = [];
+    let depIndex: number = 0;
+
+    async function displayStuff() {
         if (deps.length === 0) {
-            message += 'No bus data :(';
-            await display2.writeMessage(0, Display.ROW.BOTTOM, message);
-        } else if (deps.length === 1) {
-            message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
+            let message = 'No bus data :(';
             await display2.writeMessage(0, Display.ROW.BOTTOM, message);
         } else {
-            message = `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
-            await display2.writeMessage(0, Display.ROW.TOP, message);
-            message = `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`
-            await display2.writeMessage(0, Display.ROW.BOTTOM, message);
+            depIndex = deps.length < 5 ? deps.length - 1 : depIndex;
+            const m1 = `${depIndex + 1}  ${deps[depIndex].routeName} - ${deps[depIndex].estimatedDepartureTime}`.substr(0, 16);
+            await display2.writeMessage(0, Display.ROW.TOP, m1);
+            if (deps[depIndex + 1]) {
+                const m2 = `${depIndex + 2}  ${deps[depIndex + 1].routeName} - ${deps[depIndex + 1].estimatedDepartureTime}`.substr(0, 16);
+                await display2.writeMessage(0, Display.ROW.BOTTOM, m2);
+            }
+            /*if (deps.length === 1) {
+                message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
+                await display2.writeMessage(0, Display.ROW.BOTTOM, message);
+            } else {
+                message = `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
+                await display2.writeMessage(0, Display.ROW.TOP, message);
+                message = `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`
+                await display2.writeMessage(0, Display.ROW.BOTTOM, message);
+            }*/
         }
     }
+
+    while (true) {
+        const busStopPromise: Promise<any> = busStop.waitForNewDepartures();
+        const buttonPromise: Promise<any> = button.waitForPress();
+        const i = await waitForFirst([busStopPromise, buttonPromise]);
+        depIndex = 0;
+        if (i === 0) {
+            deps = busStop.busDepartures;
+            await displayStuff();
+        } else {
+            const max = deps.length < 5 ? deps.length - 1 : 5;
+            depIndex = (depIndex + 1) % max;
+            await displayStuff();
+        }
+    }
+}
+
+function waitForFirst(ps: Promise<any>[]): Promise<number> {
+    return new Promise<number>(resolve => {
+        let resolved: boolean = false;
+        ps.forEach((p, i) => {
+            p.then(() => {
+                if (!resolved) {
+                    resolved = true;
+                    resolve(i);
+                }
+            });
+        })
+    });
 }
 
 start();
