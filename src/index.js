@@ -43,7 +43,7 @@ function start() {
 }
 function start2() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield display.writeMessage(0, Display_1.Display.ROW.TOP, 'Buses:');
+        yield display2.writeMessage(0, Display_1.Display.ROW.TOP, 'Buses:');
         while (true) {
             yield busStop.waitForNewDepartures();
             let deps = busStop.busDepartures;
@@ -54,7 +54,7 @@ function start2() {
             else {
                 message += `${deps[0].routeName} - ${deps[0].date} ${deps[0].estimatedDepartureTime}`;
             }
-            yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, message);
+            yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, message);
         }
     });
 }

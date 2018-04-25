@@ -37,7 +37,7 @@ async function start() {
 }
 
 async function start2() {
-    await display.writeMessage(0, Display.ROW.TOP, 'Buses:');
+    await display2.writeMessage(0, Display.ROW.TOP, 'Buses:');
     while (true) {
         await busStop.waitForNewDepartures();
         let deps = busStop.busDepartures;
@@ -47,7 +47,7 @@ async function start2() {
         } else {
             message += `${deps[0].routeName} - ${deps[0].date} ${deps[0].estimatedDepartureTime}`
         }
-        await display.writeMessage(0, Display.ROW.BOTTOM, message);
+        await display2.writeMessage(0, Display.ROW.BOTTOM, message);
     }
 }
 
