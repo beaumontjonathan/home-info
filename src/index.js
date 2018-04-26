@@ -119,10 +119,37 @@ function waitForFirst(ps) {
 }
 start();
 start2().catch(e => console.log('fuck', e.message));
-process.on('SIGINT', function () {
+process.on('SIGINT', stop);
+process.on('SIGTERM', stop);
+function stop() {
     console.log("\nending!");
     button.closeButton();
     display.closeLcd();
-    process.exit();
-});
+    let flag = false;
+    goodBye(display)
+        .then(() => {
+        if (flag) {
+            process.exit();
+        }
+        else {
+            flag = true;
+        }
+    });
+    goodBye(display2)
+        .then(() => {
+        if (flag) {
+            process.exit();
+        }
+        else {
+            flag = true;
+        }
+    });
+}
+function goodBye(display) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield display.writeMessage(0, Display_1.Display.ROW.TOP, 'Powering down...');
+        yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, 'Goodbye :)');
+        display.closeLcd();
+    });
+}
 //# sourceMappingURL=index.js.map

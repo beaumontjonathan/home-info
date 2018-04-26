@@ -41,7 +41,7 @@ async function start2() {
     let deps = [];
     let depIndex: number = 0;
 
-    function formatDepMessage(index: number, {routeName, estimatedDepartureTime}: {routeName: string, estimatedDepartureTime: string}): string {
+    function formatDepMessage(index: number, { routeName, estimatedDepartureTime }: { routeName: string, estimatedDepartureTime: string }): string {
         return `${index} | ${routeName}` + ' '.repeat(12 - routeName.length - estimatedDepartureTime.length) + `${estimatedDepartureTime}`;
     }
 
@@ -114,9 +114,34 @@ function waitForFirst(ps: Promise<any>[]): Promise<number> {
 start();
 start2().catch(e => console.log('fuck', e.message));
 
-process.on('SIGINT', function() {
+process.on('SIGINT', stop);
+process.on('SIGTERM', stop);
+
+function stop() {
     console.log("\nending!");
     button.closeButton();
     display.closeLcd();
-    process.exit();
-});
+    let flag = false;
+    goodBye(display)
+        .then(() => {
+            if (flag) {
+                process.exit();
+            } else {
+                flag = true;
+            }
+        });
+    goodBye(display2)
+        .then(() => {
+            if (flag) {
+                process.exit();
+            } else {
+                flag = true;
+            }
+        });
+}
+
+async function goodBye(display: Display) {
+    await display.writeMessage(0, Display.ROW.TOP, 'Powering down...');
+    await display.writeMessage(0, Display.ROW.BOTTOM, 'Goodbye :)');
+    display.closeLcd();
+}
