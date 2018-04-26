@@ -39,7 +39,7 @@ class BusStop {
             .map(dep => {
             return {
                 routeName: dep.ServiceNumber,
-                estimatedDepartureTime: dep.Due
+                estimatedDepartureTime: this.formatDepartureTime(dep.Due)
             };
         });
         this.busDepartures = departures;
@@ -51,6 +51,28 @@ class BusStop {
                 resolve();
             });
         });
+    }
+    formatDepartureTime(dep) {
+        if (dep.includes(':')) {
+            const parts = dep.split(':');
+            if (parts.length !== 2)
+                return dep;
+            const now = new Date();
+            const then = new Date();
+            then.setHours(parseInt(parts[0]));
+            then.setMinutes(parseInt(parts[1]));
+            let newDep;
+            let minutesDif = (+then - +now) / 60000;
+            if (minutesDif < 0) {
+                then.setDate(then.getDate() + 1);
+                minutesDif = (+then - +now) / 60000;
+            }
+            newDep = `${Math.round(minutesDif)} mins`;
+            return newDep;
+        }
+        else {
+            return dep;
+        }
     }
 }
 BusStop.UPDATE_INTERVAL_SECONDS = 10;

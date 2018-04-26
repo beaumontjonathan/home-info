@@ -41,18 +41,27 @@ async function start2() {
     let deps = [];
     let depIndex: number = 0;
 
+    function formatDepMessage(index: number, {routeName, estimatedDepartureTime}: {routeName: string, estimatedDepartureTime: string}): string {
+        return `${index} | ${routeName}` + ' '.repeat(12 - routeName.length - estimatedDepartureTime.length) + `${estimatedDepartureTime}`;
+    }
+
+    /*
+            12 - length of route - length of dep time
+            +----------------+
+            |2 | U2    5 mins|
+            |3 | RA4 123 mins|
+            +----------------+
+     */
+
     async function displayStuff() {
         if (deps.length === 0) {
-            let message = 'No bus data :(';
-            await display2.writeMessage(0, Display.ROW.TOP, message);
+            await display2.writeMessage(0, Display.ROW.TOP, 'No bus data :(');
             await display.writeMessage(0, Display.ROW.BOTTOM, ' '.repeat(16));
         } else {
             depIndex = deps.length < 5 ? deps.length - 1 : depIndex;
-            const m1 = `${depIndex + 1}  ${padToLength(deps[depIndex].routeName, 3)} - ${deps[depIndex].estimatedDepartureTime}`.substr(0, 16);
-            await display2.writeMessage(0, Display.ROW.TOP, m1);
+            await display2.writeMessage(0, Display.ROW.TOP, formatDepMessage(depIndex + 1, deps[depIndex]));
             if (deps[depIndex + 1]) {
-                const m2 = `${depIndex + 2}  ${padToLength(deps[depIndex + 1].routeName, 3)} - ${deps[depIndex + 1].estimatedDepartureTime}`.substr(0, 16);
-                await display2.writeMessage(0, Display.ROW.BOTTOM, m2);
+                await display2.writeMessage(0, Display.ROW.BOTTOM, formatDepMessage(depIndex + 2, deps[depIndex + 1]));
             } else {
                 await display2.writeMessage(0, Display.ROW.BOTTOM, ' '.repeat(16));
             }

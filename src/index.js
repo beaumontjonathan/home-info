@@ -46,20 +46,27 @@ function start2() {
         yield display2.writeMessage(0, Display_1.Display.ROW.TOP, 'Buses:');
         let deps = [];
         let depIndex = 0;
+        function formatDepMessage(index, { routeName, estimatedDepartureTime }) {
+            return `${index} | ${routeName}` + ' '.repeat(12 - routeName.length - estimatedDepartureTime.length) + `${estimatedDepartureTime}`;
+        }
+        /*
+                12 - length of route - length of dep time
+                +----------------+
+                |2 | U2    5 mins|
+                |3 | RA4 123 mins|
+                +----------------+
+         */
         function displayStuff() {
             return __awaiter(this, void 0, void 0, function* () {
                 if (deps.length === 0) {
-                    let message = 'No bus data :(';
-                    yield display2.writeMessage(0, Display_1.Display.ROW.TOP, message);
+                    yield display2.writeMessage(0, Display_1.Display.ROW.TOP, 'No bus data :(');
                     yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
                 }
                 else {
                     depIndex = deps.length < 5 ? deps.length - 1 : depIndex;
-                    const m1 = `${depIndex + 1}  ${padToLength(deps[depIndex].routeName, 3)} - ${deps[depIndex].estimatedDepartureTime}`.substr(0, 16);
-                    yield display2.writeMessage(0, Display_1.Display.ROW.TOP, m1);
+                    yield display2.writeMessage(0, Display_1.Display.ROW.TOP, formatDepMessage(depIndex + 1, deps[depIndex]));
                     if (deps[depIndex + 1]) {
-                        const m2 = `${depIndex + 2}  ${padToLength(deps[depIndex + 1].routeName, 3)} - ${deps[depIndex + 1].estimatedDepartureTime}`.substr(0, 16);
-                        yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, m2);
+                        yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, formatDepMessage(depIndex + 2, deps[depIndex + 1]));
                     }
                     else {
                         yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
