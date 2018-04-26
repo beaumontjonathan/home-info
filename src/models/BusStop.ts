@@ -1,4 +1,5 @@
 import * as rp from 'request-promise';
+import * as moment from 'moment';
 import { EventEmitter } from 'events';
 
 export class BusStop {
@@ -56,14 +57,14 @@ export class BusStop {
         if (dep.includes(':')) {
             const parts = dep.split(':');
             if (parts.length !== 2) return dep;
-            const now = new Date();
-            const then = new Date();
-            then.setHours(parseInt(parts[0]));
-            then.setMinutes(parseInt(parts[1]));
+            const now = moment();
+            const then = moment();
+            then.hours(parseInt(parts[0]));
+            then.minutes(parseInt(parts[1]));
             let newDep;
             let minutesDif = (+then - +now) / 60000;
             if (minutesDif < 0) {
-                then.setDate(then.getDate() + 1);
+                then.date(then.date() + 1);
                 minutesDif = (+then - +now) / 60000;
             }
             newDep = `${Math.round(minutesDif)} mins`;
