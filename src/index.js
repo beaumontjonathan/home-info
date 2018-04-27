@@ -63,7 +63,7 @@ function start2() {
                     yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
                 }
                 else {
-                    depIndex = deps.length < 5 ? deps.length - 1 : depIndex;
+                    depIndex = depIndex < deps.length ? depIndex : deps.length < 5 ? deps.length - 1 : depIndex;
                     yield display2.writeMessage(0, Display_1.Display.ROW.TOP, formatDepMessage(depIndex + 1, deps[depIndex]));
                     if (deps[depIndex + 1]) {
                         yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, formatDepMessage(depIndex + 2, deps[depIndex + 1]));
@@ -71,15 +71,6 @@ function start2() {
                     else {
                         yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
                     }
-                    /*if (deps.length === 1) {
-                        message += `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
-                        await display2.writeMessage(0, Display.ROW.BOTTOM, message);
-                    } else {
-                        message = `${deps[0].routeName} - ${deps[0].estimatedDepartureTime}`
-                        await display2.writeMessage(0, Display.ROW.TOP, message);
-                        message = `${deps[1].routeName} - ${deps[1].estimatedDepartureTime}`
-                        await display2.writeMessage(0, Display.ROW.BOTTOM, message);
-                    }*/
                 }
             });
         }
