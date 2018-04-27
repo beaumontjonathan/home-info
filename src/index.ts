@@ -111,7 +111,6 @@ process.on('SIGTERM', stop);
 function stop() {
     console.log("\nending!");
     button.closeButton();
-    display.closeLcd();
     let flag = false;
     goodBye(display)
         .then(() => {
