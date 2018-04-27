@@ -37,7 +37,7 @@ function start() {
         yield display.writeMessage(0, Display_1.Display.ROW.TOP, 'Temperature:');
         while (true) {
             yield weather.waitForWeatherUpdate();
-            yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, `${weather.temperature}°`);
+            yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, `${weather.temperature}'C`);
         }
     });
 }

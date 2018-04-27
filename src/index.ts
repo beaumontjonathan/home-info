@@ -32,7 +32,7 @@ async function start() {
     await display.writeMessage(0, Display.ROW.TOP, 'Temperature:');
     while (true) {
         await weather.waitForWeatherUpdate();
-        await display.writeMessage(0, Display.ROW.BOTTOM, `${weather.temperature}°`);
+        await display.writeMessage(0, Display.ROW.BOTTOM, `${weather.temperature}'C`);
     }
 }
 
