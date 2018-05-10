@@ -60,7 +60,7 @@ function start2() {
             return __awaiter(this, void 0, void 0, function* () {
                 if (deps.length === 0) {
                     yield display2.writeMessage(0, Display_1.Display.ROW.TOP, 'No bus data :(');
-                    yield display.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
+                    yield display2.writeMessage(0, Display_1.Display.ROW.BOTTOM, ' '.repeat(16));
                 }
                 else {
                     depIndex = depIndex < deps.length ? depIndex : deps.length < 5 ? deps.length - 1 : depIndex;

@@ -56,7 +56,7 @@ async function start2() {
     async function displayStuff() {
         if (deps.length === 0) {
             await display2.writeMessage(0, Display.ROW.TOP, 'No bus data :(');
-            await display.writeMessage(0, Display.ROW.BOTTOM, ' '.repeat(16));
+            await display2.writeMessage(0, Display.ROW.BOTTOM, ' '.repeat(16));
         } else {
             depIndex = depIndex < deps.length ? depIndex : deps.length < 5 ? deps.length - 1 : depIndex;
             await display2.writeMessage(0, Display.ROW.TOP, formatDepMessage(depIndex + 1, deps[depIndex]));
